@@ -57,7 +57,7 @@ class FilesController {
         parentId: tmpFile.ops[0].parentId,
       });
     }
-    const localFilename = uuidv4()
+    const localFilename = uuidv4();
     const localPath = `${relPath}/${localFilename}`;
     const clearData = Buffer.from(fileData, 'base64');
     fs.mkdirSync(relPath, { recursive: true });
