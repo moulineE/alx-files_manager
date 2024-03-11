@@ -1,5 +1,5 @@
 import dbClient from '../utils/db';
-import UserHelper from '../utils/user';
+import Helper from '../utils/helper';
 
 const sha1 = require('sha1');
 
@@ -23,11 +23,11 @@ class UsersController {
   }
 
   static async getMe(request, response) {
-    const userId = await UserHelper.getUserIdByToken(request);
+    const userId = await Helper.getUserIdByToken(request);
     if (!userId) {
       return response.status(401).json({ error: 'Unauthorized' });
     }
-    const user = await UserHelper.getUserByUserId(userId);
+    const user = await Helper.getUserByUserId(userId);
     if (!user) {
       return response.status(401).json({ error: 'Unauthorized' });
     }
