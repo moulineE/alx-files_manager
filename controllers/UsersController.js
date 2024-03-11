@@ -6,9 +6,6 @@ const sha1 = require('sha1');
 
 class UsersController {
   static async postNew(request, response) {
-    if (!request.body) {
-      return response.status(400).json({ error: 'Missing request body' });
-    }
     const { email, password } = request.body;
     if (!email) {
       return response.status(400).json({ error: 'Missing email' });
@@ -33,6 +30,9 @@ class UsersController {
       return response.status(401).json({ error: 'Unauthorized' });
     }
     const user = await dbClient.users.findOne({ _id: ObjectId(userId) });
+    if (!user) {
+      return response.status(401).json({ error: 'Unauthorized' });
+    }
     return response.status(200).json({ id: user._id, email: user.email });
   }
 }
