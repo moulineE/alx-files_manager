@@ -75,5 +75,67 @@ class FilesController {
       parentId: tmpFile.ops[0].parentId,
     });
   }
+
+  static async getShow(request, response) {
+    const userId = await Helper.getUserIdByToken(request);
+    if (!userId) {
+      return response.status(401).json({ error: 'Unauthorized' });
+    }
+    const user = await Helper.getUserByUserId(userId);
+    if (!user) {
+      return response.status(401).json({ error: 'Unauthorized' });
+    }
+    const fileId = request.params.id || '';
+    const file = await Helper.getFileByFileIdAndUserId(fileId, userId);
+    if (!file) {
+      return response.status(404).json({ error: 'Not found' });
+    }
+    return response.status(200).json({
+      id: file._id,
+      userId: file.userId,
+      name: file.name,
+      type: file.type,
+      isPublic: file.isPublic,
+      parentId: file.parentId,
+    });
+  }
+
+  static async getIndex(request, response) {
+    const userId = await Helper.getUserIdByToken(request);
+    if (!userId) {
+      return response.status(401).json({ error: 'Unauthorized' });
+    }
+    const user = await Helper.getUserByUserId(userId);
+    if (!user) {
+      return response.status(401).json({ error: 'Unauthorized' });
+    }
+    return false;
+  }
+
+  static async putPublish(request, response) {
+    const userId = await Helper.getUserIdByToken(request);
+    if (!userId) {
+      return response.status(401).json({ error: 'Unauthorized' });
+    }
+    const user = await Helper.getUserByUserId(userId);
+    if (!user) {
+      return response.status(401).json({ error: 'Unauthorized' });
+    }
+    const fileId = request.params.id || '';
+    const file = await Helper.getFileByFileIdAndUserId(fileId, userId);
+    if (!file) {
+      return response.status(404).json({ error: 'Not found' });
+    }
+    await Helper.updateFileByFileId(fileId, 'isPublic', true);
+    const updatedFile = await Helper.getFileByFileIdAndUserId(fileId, userId);
+    return response.status(200).json({
+      id: updatedFile._id,
+      userId: updatedFile.userId,
+      name: updatedFile.name,
+      type: updatedFile.type,
+      isPublic: updatedFile.isPublic,
+      parentId: updatedFile.parentId,
+    });
+  }
 }
 module.exports = FilesController;

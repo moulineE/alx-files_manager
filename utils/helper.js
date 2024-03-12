@@ -19,5 +19,13 @@ class Helper {
   static async insertFile(file) {
     return dbClient.files.insertOne(file);
   }
+
+  static async getFileByFileIdAndUserId(fileId, userId) {
+    return dbClient.files.findOne({ _id: ObjectId(fileId), userId });
+  }
+
+  static async updateFileByFileId(fileId, field, value) {
+    return dbClient.files.findOne({ _id: ObjectId(fileId) }, { $set: { field: value } });
+  }
 }
 module.exports = Helper;
