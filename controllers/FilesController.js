@@ -109,7 +109,7 @@ class FilesController {
     if (!user) {
       return response.status(401).json({ error: 'Unauthorized' });
     }
-    return response.status(404).json({error: 'not implemented yet'});
+    return response.status(404).json({ error: 'not implemented yet' });
   }
 
   static async putPublish(request, response) {
