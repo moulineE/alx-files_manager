@@ -137,5 +137,31 @@ class FilesController {
       parentId: updatedFile.parentId,
     });
   }
+
+  static async putUnpublish(request, response) {
+    const userId = await Helper.getUserIdByToken(request);
+    if (!userId) {
+      return response.status(401).json({ error: 'Unauthorized' });
+    }
+    const user = await Helper.getUserByUserId(userId);
+    if (!user) {
+      return response.status(401).json({ error: 'Unauthorized' });
+    }
+    const fileId = request.params.id || '';
+    const file = await Helper.getFileByFileIdAndUserId(fileId, userId);
+    if (!file) {
+      return response.status(404).json({ error: 'Not found' });
+    }
+    await Helper.updateFileByFileId(fileId, 'isPublic', false);
+    const updatedFile = await Helper.getFileByFileIdAndUserId(fileId, userId);
+    return response.status(200).json({
+      id: updatedFile._id,
+      userId: updatedFile.userId,
+      name: updatedFile.name,
+      type: updatedFile.type,
+      isPublic: updatedFile.isPublic,
+      parentId: updatedFile.parentId,
+    });
+  }
 }
 module.exports = FilesController;
