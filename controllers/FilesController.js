@@ -86,7 +86,7 @@ class FilesController {
       return response.status(401).json({ error: 'Unauthorized' });
     }
     const fileId = request.params.id || '';
-    const file = await Helper.getFileByFileIdAndUserId(fileId, userId);
+    const file = await Helper.getFileByFileIdAndUserId(fileId, user._id);
     if (!file) {
       return response.status(404).json({ error: 'Not found' });
     }
