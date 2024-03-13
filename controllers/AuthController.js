@@ -9,8 +9,12 @@ class AuthController {
     if (authorizationHeader) {
       const auth = Buffer.from(authorizationHeader.split(' ')[1], 'base64').toString().split(':');
       const email = auth[0];
-      const password = sha1(auth[1]);
-      const user = await dbClient.users.findOne({ email, password });
+      const password = auth[1];
+      if (!email || !password) {
+        return response.status(401).json({ error: 'Unauthorized' });
+      }
+      const hashedPass = sha1(password);
+      const user = await dbClient.users.findOne({ email, hashedPass });
       if (!user) {
         return response.status(401).json({ error: 'Unauthorized' });
       }

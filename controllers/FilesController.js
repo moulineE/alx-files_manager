@@ -26,7 +26,7 @@ class FilesController {
     let fileParentId = request.body.parentId || 0;
     const fileIsPublic = request.body.isPublic || false;
     const fileData = request.body.data;
-    if (fileType === !'folder' && !fileData) {
+    if (fileType !== 'folder' && !fileData) {
       return response.status(400).json({ error: 'Missing data' });
     }
     fileParentId = fileParentId === '0' ? 0 : fileParentId;
