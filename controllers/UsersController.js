@@ -1,7 +1,6 @@
+import sha1 from 'sha1';
 import dbClient from '../utils/db';
 import Helper from '../utils/helper';
-
-import sha1 from 'sha1';
 
 class UsersController {
   static async postNew(request, response) {
