@@ -1,7 +1,7 @@
 import dbClient from '../utils/db';
 import Helper from '../utils/helper';
 
-const sha1 = require('sha1');
+import sha1 from 'sha1';
 
 class UsersController {
   static async postNew(request, response) {
